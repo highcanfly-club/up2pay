@@ -1,0 +1,40 @@
+{
+  "name": "@sctg/up2pay",
+  "version": "0.9.0",
+  "type": "module",
+  "description": "A simple implementation of the Crédit Agricole Pay2Up System payment solution",
+  "keywords": [
+    "up2pay",
+    "form",
+    "payment",
+    "gateway",
+    "e-commerce"
+  ],
+  "main": "lib/up2pay.js",
+  "types": "lib/up2pay.d.ts",
+  "repository": "https://github.com/adriantombu/packages/tree/main/packages/up2pay-system",
+  "author": "Ronan Le Meillat <ronan.le_meillat@sctg.eu.org>",
+  "license": "Private",
+  "scripts": {
+    "build": "tsc --declaration",
+    "test": "jest",
+    "clean": "rimraf ./coverage ./lib",
+    "watch": "tsc -p . --watch",
+    "watch:test": "jest --watchAll"
+  },
+  "dependencies": {
+    "axios": "^1.2.1",
+    "crypto-js": "^4.1.1"
+  },
+  "publishConfig": {
+    "@sctg:registry": "https://npm.pkg.github.com",
+    "tag": "latest"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "^4.1.1",
+    "@types/node": "^18.11.13",
+    "jest": "^29.3.1",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1"
+  }
+}

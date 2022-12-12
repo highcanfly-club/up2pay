@@ -2,10 +2,8 @@
 .editorconfig
 .travis.yml
 npm-debug.log
-fonts/
 test/
+build/
 node_modules/
-coverage/
-fontmin.png
 TODO.md
 CHANGELOG.md

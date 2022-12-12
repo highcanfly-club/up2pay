@@ -10,17 +10,18 @@
     "gateway",
     "e-commerce"
   ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "main": "lib/up2pay.js",
   "types": "lib/up2pay.d.ts",
   "repository": "https://github.com/adriantombu/packages/tree/main/packages/up2pay-system",
   "author": "Ronan Le Meillat <ronan.le_meillat@sctg.eu.org>",
   "license": "Private",
   "scripts": {
-    "build": "tsc --declaration",
-    "test": "jest",
-    "clean": "rimraf ./coverage ./lib",
-    "watch": "tsc -p . --watch",
-    "watch:test": "jest --watchAll"
+    "build": "tsc",
+    "test": "mocha -n loader=ts-node/esm --extension ts",
+    "watch": "tsc -p . --watch"
   },
   "dependencies": {
     "axios": "^1.2.1",
@@ -31,10 +32,12 @@
     "tag": "latest"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.4",
     "@types/crypto-js": "^4.1.1",
+    "@types/mocha": "^10.0.1",
     "@types/node": "^18.11.13",
-    "jest": "^29.3.1",
-    "ts-jest": "^29.0.3",
+    "chai": "^4.3.7",
+    "mocha": "^10.1.0",
     "ts-node": "^10.9.1"
   }
 }

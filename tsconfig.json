@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2018",
-    "module": "commonjs",
+    "target": "ES2020",
+    "module": "ESNext",
     "lib": ["esNext", "dom"],
     "outDir": "lib",
     "forceConsistentCasingInFileNames":true,
@@ -9,11 +9,13 @@
     "noImplicitAny": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "strictNullChecks": true,
     "esModuleInterop": true,
-    "declaration": true
+    "declaration": true,
+    "skipLibCheck": true,
+    "moduleResolution":"Node",
+    "resolveJsonModule": true,
+    "types": ["node","mocha"]
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "lib", "src/**/*.test.ts"]

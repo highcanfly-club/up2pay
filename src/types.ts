@@ -1,4 +1,4 @@
-export interface Params {
+export type Params ={
   payboxSandbox: boolean
   payboxSite: Request['PBX_SITE']
   payboxRang: Request['PBX_RANG']
@@ -15,17 +15,17 @@ export interface Params {
   email: Request['PBX_PORTEUR']
 }
 
-export interface Document {
+export type Document ={
   request: Request
   sandbox: boolean
 }
 
-export interface FormElement {
+export type FormElement ={
   name: string
   value: string
 }
 
-export interface Request {
+export type Request ={
   /**
    * C’est le numéro de site (TPE) fourni par la banque du commerçant
    * Format: 7 chiffres
@@ -300,7 +300,7 @@ export interface Request {
 }
 
 // See 11.1.7 documentation section for PBX_RETOUR
-export interface Result {
+export type Result ={
   /**
    * Montant de la transaction (précisé dans PBX_TOTAL)
    */

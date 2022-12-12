@@ -1,12 +1,12 @@
-import axios from "axios";
+//import axios from "axios";
 import crypto from "node:crypto";
-import hmacSHA512 from "crypto-js/hmac-sha512";
-import Hex from "crypto-js/enc-hex";
+import hmacSHA512 from "crypto-js/hmac-sha512.js";
+import Hex from "crypto-js/enc-hex.js";
 
-import errors from "./errors";
-import { Document, Params, Request, Result, FormElement } from "./types";
+import errors from "./errors.js";
+import type { Document, Params, Request, Result, FormElement } from "./types";
 
-export * from "./types";
+export * from "./types.js";
 
 export class Up2Pay implements Document {
   request: Request;
@@ -131,52 +131,39 @@ export class Up2Pay implements Document {
     return `${day}${month}${year}${hour}${minute}${second}`;
   }
 
-
   private getHMACDigest(message: string, secret: string): string {
-    const hmac = Hex.parse(secret)
-    return Hex.stringify(
-      hmacSHA512(message, hmac)
-    ).toUpperCase();
+    const hmac = Hex.parse(secret);
+    return Hex.stringify(hmacSHA512(message, hmac)).toUpperCase();
   }
 
   private async computeHMAC() {
     if (this.request.PBX_HMAC) {
       const elements = this.getFormElements();
       const key = this.request.PBX_HMAC;
-      const hmac = Buffer.from(key, "hex");
       const chain = elements
         .filter((e) => e.name !== "PBX_HMAC")
         .map((e) => `${e.name}=${e.value}`)
         .join("&");
 
-      let digest = "";
-      if (typeof crypto.createHmac === "function") {
-        digest = crypto
-          .createHmac("sha512", hmac)
-          .update(chain)
-          .digest("hex")
-          .toUpperCase();
-      } else {
-        
-      }
-
-      console.log(
-        `${digest}\n${this.getHMACDigest(
-          chain,
-          key
-        )}\n${typeof crypto.createHmac}`
-      );
+      const digest = this.getHMACDigest(chain, key);
       this.request.PBX_HMAC = digest;
     }
   }
 
-  private async getUrl(): Promise<string> {
+  private getUrl(): Promise<string> {
     const urls = this.sandbox ? baseUrls.sandbox : baseUrls.prod;
-    const res = await axios.get(`${urls.main}/load.html`);
-console.log(res.data)
-    return `${
-      res.data.includes(">OK<") ? urls.main : urls.fallback
-    }/cgi/FramepagepaiementRWD.cgi`;
+    const rUrl = `${urls.main}/load.html`;
+    return new Promise<string>((resolve) => {
+      fetch(rUrl).then((value) => {
+        value.text().then((data)=>{
+          resolve(
+            `${
+              data.includes(">OK<") ? urls.main : urls.fallback
+            }/cgi/FramepagepaiementRWD.cgi`
+          );
+        })
+      });
+    });
   }
 
   private getFormElements() {

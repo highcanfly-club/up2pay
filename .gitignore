@@ -2,3 +2,4 @@ lib
 coverage
 node_modules
 lerna-debug.log
+paybox-config.json

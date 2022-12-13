@@ -30,7 +30,7 @@ describe("sandbox-form", async () => {
   it("form url", async() => {
     let form = await up2pay.form();
     expect(form.url).to.be.equal(
-      "https://preprod-tpeweb.e-transactions.fr/cgi/FramepagepaiementRWD.cgi"
+      "https://preprod-tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi"
     );
   });
 

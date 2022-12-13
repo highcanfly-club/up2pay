@@ -10,20 +10,20 @@ export * from "./types.js";
 export class Up2Pay implements Document {
   request: Request;
   sandbox: boolean;
+  secretKey: string; //hexstring
 
   constructor(params: Params) {
     this.sandbox = params.payboxSandbox;
-
+    this.secretKey = params.payboxHmac || "";
     this.request = {
       PBX_SITE: params.payboxSite,
       PBX_RANG: params.payboxRang,
       PBX_IDENTIFIANT: params.payboxIdentifiant,
-      PBX_ARCHIVAGE: this.archivage(),
-      PBX_HMAC: params.payboxHmac,
+      //PBX_ARCHIVAGE: this.archivage(),
 
       PBX_TOTAL: this.formatAmount(params.amount),
       PBX_DEVISE: "978",
-
+      PBX_SOURCE: "RWD",
       PBX_CMD: params.reference,
       PBX_PORTEUR: params.email,
       PBX_RETOUR: this.setReturnVars(),
@@ -37,6 +37,7 @@ export class Up2Pay implements Document {
       PBX_ANNULE: params.payboxAnnule,
       PBX_ATTENTE: params.payboxAttente,
       PBX_REPONDRE_A: params.payboxRepondreA,
+      PBX_HMAC: "",
     };
 
     this.computeHMAC();
@@ -68,12 +69,12 @@ export class Up2Pay implements Document {
   }
 
   static signatureIsValid(result: Result): boolean {
-    const signature = result.signature || ""
+    const signature = result.signature || "";
     delete result.signature;
     const message = new URLSearchParams(
       result as unknown as undefined
     ).toString();
-      return isSignatureIsValid(message,signature,payboxPublicKey)
+    return isSignatureIsValid(message, signature, payboxPublicKey);
   }
 
   async form() {
@@ -109,31 +110,30 @@ export class Up2Pay implements Document {
 
   private getTime() {
     const now = new Date();
-    const day = now.getDay().toString().padStart(2, "0");
-    const month = (now.getMonth() + 1).toString().padStart(2, "0");
-    const year = now.getFullYear();
-    const hour = now.getHours().toString().padStart(2, "0");
-    const minute = now.getMinutes().toString().padStart(2, "0");
-    const second = now.getSeconds().toString().padStart(2, "0");
-
-    return `${day}${month}${year}${hour}${minute}${second}`;
+    return now.toISOString();
   }
 
-  private getHMACDigest(message: string, secret: string): string {
+  /**
+   * 
+   * @param message the Paybox concatentation of parameters
+   * @param secret the hexstring of the secret key
+   * @returns the hmacSHA512 digest in a uppercase string
+   */
+  static getHMACDigest(message: string, secret: string): string {
     const hmac = Hex.parse(secret);
     return Hex.stringify(hmacSHA512(message, hmac)).toUpperCase();
   }
 
   private async computeHMAC() {
-    if (this.request.PBX_HMAC) {
+    if (this.secretKey) {
       const elements = this.getFormElements();
-      const key = this.request.PBX_HMAC;
+      const key = this.secretKey;
       const chain = elements
         .filter((e) => e.name !== "PBX_HMAC")
         .map((e) => `${e.name}=${e.value}`)
         .join("&");
 
-      const digest = this.getHMACDigest(chain, key);
+      const digest = Up2Pay.getHMACDigest(chain, key);
       this.request.PBX_HMAC = digest;
     }
   }
@@ -147,13 +147,13 @@ export class Up2Pay implements Document {
     const rUrl = `${urls.main}/load.html`;
     return new Promise<string>((resolve) => {
       fetch(rUrl).then((value) => {
-        value.text().then((data)=>{
+        value.text().then((data) => {
           resolve(
             `${
               data.includes(">OK<") ? urls.main : urls.fallback
             }/cgi/MYchoix_pagepaiement.cgi` //new CA=FramepagepaiementRWD.cgi
           );
-        })
+        });
       });
     });
   }

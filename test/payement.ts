@@ -62,6 +62,5 @@ describe("sandbox payement", () => {
     };
     const up2pay = Up2Pay.create(config);
     const form = await up2pay.form();
-    console.log(form.form)
   });
 });

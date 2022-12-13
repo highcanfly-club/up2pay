@@ -260,7 +260,7 @@ export type Request ={
    * Définit le format de la page du choix du moyen de paiement. Cette variable est à modifier en fonction du type de navigateur.
    * Format : 3 à 5 caractères (Ex: HTML)
    */
-  PBX_SOURCE?: 'HTML' | 'WAP' | 'IMODE' | 'XHTML'
+  PBX_SOURCE?: 'HTML' | 'WAP' | 'IMODE' | 'XHTML' | 'RWD'
 
   /**
    * Privilégie un type de carte

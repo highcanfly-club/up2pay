@@ -138,6 +138,10 @@ export class Up2Pay implements Document {
     }
   }
 
+  /**
+   * check if remote tpeweb is working
+   * @returns a Promise<string> containg the url of the tpeweb endpoint
+   */
   private getUrl(): Promise<string> {
     const urls = this.sandbox ? baseUrls.sandbox : baseUrls.prod;
     const rUrl = `${urls.main}/load.html`;
@@ -147,7 +151,7 @@ export class Up2Pay implements Document {
           resolve(
             `${
               data.includes(">OK<") ? urls.main : urls.fallback
-            }/cgi/FramepagepaiementRWD.cgi`
+            }/cgi/MYchoix_pagepaiement.cgi` //new CA=FramepagepaiementRWD.cgi
           );
         })
       });

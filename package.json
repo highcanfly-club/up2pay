@@ -1,6 +1,6 @@
 {
   "name": "@highcanfly-club/up2pay",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "type": "module",
   "description": "A simple implementation of the Crédit Agricole Pay2Up System payment solution",
   "keywords": [
@@ -45,7 +45,7 @@
     "@types/crypto-js": "^4.1.1",
     "@types/jsrsasign": "^10.5.4",
     "@types/mocha": "^10.0.1",
-    "@types/node": "^18.11.13",
+    "@types/node": "^18.11.14",
     "chai": "^4.3.7",
     "mocha": "^10.2.0",
     "ts-node": "^10.9.1"

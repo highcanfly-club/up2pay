@@ -1,10 +1,9 @@
-//import axios from "axios";
-import crypto from "node:crypto";
 import hmacSHA512 from "crypto-js/hmac-sha512.js";
 import Hex from "crypto-js/enc-hex.js";
 
 import errors from "./errors.js";
 import type { Document, Params, Request, Result, FormElement } from "./types";
+import { isSignatureIsValid } from "./crypto.js";
 
 export * from "./types.js";
 
@@ -69,23 +68,12 @@ export class Up2Pay implements Document {
   }
 
   static signatureIsValid(result: Result): boolean {
-    const signature = new Buffer(result.signature || "", "base64");
+    const signature = result.signature || ""
     delete result.signature;
-
-    if (signature.length !== 128) {
-      return false;
-    }
-
     const message = new URLSearchParams(
       result as unknown as undefined
     ).toString();
-
-    const publicKey = crypto.createPublicKey(payboxPublicKey);
-
-    return crypto
-      .createVerify("SHA1")
-      .update(message)
-      .verify(publicKey, signature);
+      return isSignatureIsValid(message,signature,payboxPublicKey)
   }
 
   async form() {

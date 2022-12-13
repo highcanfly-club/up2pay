@@ -1,6 +1,6 @@
 {
   "name": "@highcanfly-club/up2pay",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "type": "module",
   "description": "A simple implementation of the Crédit Agricole Pay2Up System payment solution",
   "keywords": [
@@ -21,11 +21,20 @@
   "scripts": {
     "build": "tsc",
     "test": "mocha -n loader=ts-node/esm --extension ts",
-    "watch": "tsc -p . --watch"
+    "watch": "tsc -p . --watch",
+    "create-ca": "openssl req -x509 -sha256 -days 3562 -nodes -newkey rsa:4096 -subj '/CN=demo.highcanly.club/C=FR/L=Flers-en-Escrebieux' -keyout localhost-rootCA.key -out localhost-rootCA.pem",
+    "create-key": "openssl genrsa 4096 > localhost.key",
+    "create-csr": "openssl req -new -key localhost.key -subj '/CN=localhost/C=FR/L=Flers-en-Escrebieux'  > localhost.csr",
+    "create-crt": "openssl x509 -req -in localhost.csr -out localhost.pem -sha256 -CA localhost-rootCA.pem -days 3600 -CAkey localhost-rootCA.key -CAcreateserial -CAserial localhost-rootCA.srl",
+    "create-pubkey": "openssl rsa -in localhost.key -pubout -out localhostpubkey.pem",
+    "create-cert": "npm run create-ca && npm run create-key && npm run create-csr && npm run create-crt && npm run create-pubkey",
+    "sign": "openssl dgst -sha1 -binary -sign localhost.key -out sig.bin data.txt && openssl base64 -in sig.bin -out sig64.txt && rm sig.bin",
+    "check-sign": "openssl base64 -d -in sig64.txt -out sig.bin && openssl dgst -sha1 -binary -verify localhostpubkey.pem -signature sig.bin data.txt"
   },
   "dependencies": {
     "axios": "^1.2.1",
-    "crypto-js": "^4.1.1"
+    "crypto-js": "^4.1.1",
+    "jsrsasign": "^10.6.1"
   },
   "publishConfig": {
     "@highcanfly-club:registry": "https://npm.pkg.github.com",
@@ -34,6 +43,7 @@
   "devDependencies": {
     "@types/chai": "^4.3.4",
     "@types/crypto-js": "^4.1.1",
+    "@types/jsrsasign": "^10.5.4",
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.11.13",
     "chai": "^4.3.7",

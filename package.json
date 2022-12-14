@@ -1,6 +1,6 @@
 {
   "name": "@highcanfly-club/up2pay",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "type": "module",
   "description": "A simple implementation of the Crédit Agricole Pay2Up System payment solution",
   "keywords": [
@@ -11,7 +11,7 @@
     "e-commerce"
   ],
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=16.19.0"
   },
   "main": "lib/up2pay.js",
   "types": "lib/up2pay.d.ts",

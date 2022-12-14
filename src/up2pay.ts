@@ -76,6 +76,15 @@ export class Up2Pay implements Document {
     ).toString();
     return isSignatureIsValid(message, signature, payboxPublicKey);
   }
+  /**
+   *
+   * @param message the url part of the PBX response without &signature=…
+   * @param base64sig
+   * @returns
+   */
+  static messageIsValid(message: string, base64sig: string): boolean {
+    return isSignatureIsValid(message, base64sig, payboxPublicKey);
+  }
 
   async form() {
     return {
@@ -114,7 +123,7 @@ export class Up2Pay implements Document {
   }
 
   /**
-   * 
+   *
    * @param message the Paybox concatentation of parameters
    * @param secret the hexstring of the secret key
    * @returns the hmacSHA512 digest in a uppercase string
@@ -149,9 +158,7 @@ export class Up2Pay implements Document {
       fetch(rUrl).then((value) => {
         value.text().then((data) => {
           resolve(
-            `${
-              data.includes(">OK<") ? urls.main : urls.fallback
-            }/cgi/MYchoix_pagepaiement.cgi` //new CA=FramepagepaiementRWD.cgi
+            `${data.includes(">OK<") ? urls.main : urls.fallback}${endpoint}` //new CA=FramepagepaiementRWD.cgi
           );
         });
       });
@@ -170,6 +177,68 @@ export class Up2Pay implements Document {
 
     return elements;
   }
+
+  /**
+   *
+   * @param url complete url with signature
+   * @returns true if signature is valid false otherwise
+   */
+  static validateResponse(url: URL) {
+    const search = url.search;
+    const message = search.substring(1, search.lastIndexOf("&signature"));
+    const searchParams = new URLSearchParams(url.search);
+    const signature = searchParams.has("signature")
+      ? decodeURI(searchParams.get("signature") as string)
+      : "";
+    return Up2Pay.messageIsValid(message, signature);
+  }
+
+  /**
+   *
+   * @param url complete url with signature
+   * @returns a Result containing the parsed url
+   */
+  static getResult(url: URL): Result {
+    const searchParams = new URLSearchParams(url.search);
+    return {
+      amount: searchParams.has("amount")
+        ? (searchParams.get("amount") as string)
+        : "",
+      paymentId: searchParams.has("paymentId")
+        ? (searchParams.get("paymentId") as string)
+        : "",
+      transactionId: searchParams.has("transactionId")
+        ? (searchParams.get("transactionId") as string)
+        : "",
+      authorizationId: searchParams.has("authorizationId")
+        ? (searchParams.get("authorizationId") as string)
+        : "",
+      cardType: searchParams.has("cardType")
+        ? (searchParams.get("cardType") as string)
+        : "",
+      cardNumber: searchParams.has("cardNumber")
+        ? (searchParams.get("cardNumber") as string)
+        : "",
+      cardExpiration: searchParams.has("cardExpiration")
+        ? (searchParams.get("cardExpiration") as string)
+        : "",
+      error: searchParams.has("error")
+        ? (searchParams.get("error") as string)
+        : "",
+      payboxRef: searchParams.has("payboxRef")
+        ? (searchParams.get("payboxRef") as string)
+        : "",
+      date: searchParams.has("date")
+        ? (searchParams.get("date") as string)
+        : "",
+      time: searchParams.has("time")
+        ? (searchParams.get("time") as string)
+        : "",
+      signature: searchParams.has("signature")
+        ? decodeURI(searchParams.get("signature") as string)
+        : "",
+    } as Result;
+  }
 }
 
 const returnVars = <{ [index: string]: string }>{
@@ -177,14 +246,17 @@ const returnVars = <{ [index: string]: string }>{
   R: "paymentId",
   T: "transactionId",
   A: "authorizationId",
-  P: "cardType",
+  C: "cardType",
   N: "cardNumber",
   D: "cardExpiration",
   E: "error",
   S: "payboxRef",
+  W: "date",
+  Q: "time",
   K: "signature",
 };
 
+const endpoint = "/cgi/FramepagepaiementRWD.cgi"; //old /cgi/MYchoix_pagepaiement.cgi
 const baseUrls = {
   prod: {
     main: "https://tpeweb.e-transactions.fr",

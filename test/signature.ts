@@ -60,3 +60,18 @@ describe("signature via jsrsasign", () => {
     expect(_r).to.be.false;
   });
 });
+
+describe("validate response", () => {
+  it("valid response", () => {
+    const url = new URL(
+      "https://localhost:8788/up2pay/_cancelled?amount=900&paymentId=Paiement%20pour%20ronan@lesailesdumontblanc.cf%2014/12/2022%2013:13:45&transactionId=71622616&cardType=3DSECURE&cardNumber=&error=00001&payboxRef=0&signature=HxPfoUEfCY%2BPeji87VMoym50i9lNKsWj20oU3QiRQLiiqJaKlEMtJnltn4xfJWHjwUVFLC%2FBFLMdoNBnmEYjck5nJbIJdvtfzBzlFODHVZXfEVf94xrFsA4PGaTqT8VPmJSJx2eoi93LztSV7ihXJL5fYA6RXFLo4KwNUQvYwAI%3D"
+    );
+    expect(Up2Pay.validateResponse(url)).to.be.true;
+  });
+  it("invalid response", () => {
+    const url = new URL(
+      "https://localhost:8788/up2pay/_cancelled?amount=1000&paymentId=Paiement%20pour%20ronan@lesailesdumontblanc.cf%2014/12/2022%2013:13:45&transactionId=71622616&cardType=3DSECURE&cardNumber=&error=00001&payboxRef=0&signature=HxPfoUEfCY%2BPeji87VMoym50i9lNKsWj20oU3QiRQLiiqJaKlEMtJnltn4xfJWHjwUVFLC%2FBFLMdoNBnmEYjck5nJbIJdvtfzBzlFODHVZXfEVf94xrFsA4PGaTqT8VPmJSJx2eoi93LztSV7ihXJL5fYA6RXFLo4KwNUQvYwAI%3D"
+    );
+    expect(Up2Pay.validateResponse(url)).to.be.false;
+  });
+});

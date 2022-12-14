@@ -1,6 +1,6 @@
 {
   "name": "@highcanfly-club/up2pay",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "type": "module",
   "description": "A simple implementation of the Crédit Agricole Pay2Up System payment solution",
   "keywords": [
@@ -38,7 +38,7 @@
   },
   "publishConfig": {
     "@highcanfly-club:registry": "https://npm.pkg.github.com",
-    "tag": "beta"
+    "tag": "latest"
   },
   "devDependencies": {
     "@types/chai": "^4.3.4",

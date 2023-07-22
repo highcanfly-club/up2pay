@@ -1,6 +1,6 @@
 {
   "name": "@highcanfly-club/up2pay",
-  "version": "0.9.6",
+  "version": "0.9.9",
   "type": "module",
   "description": "A simple implementation of the Crédit Agricole Pay2Up System payment solution",
   "keywords": [
@@ -32,21 +32,24 @@
     "check-sign": "openssl base64 -d -in sig64.txt -out sig.bin && openssl dgst -sha1 -binary -verify localhostpubkey.pem -signature sig.bin data.txt"
   },
   "dependencies": {
-    "axios": "^1.2.1",
+    "axios": "^1.4.0",
     "crypto-js": "^4.1.1",
-    "jsrsasign": "^10.6.1"
+    "he": "^1.2.0",
+    "jsrsasign": "^10.8.6"
   },
   "publishConfig": {
     "@highcanfly-club:registry": "https://npm.pkg.github.com",
     "tag": "latest"
   },
   "devDependencies": {
-    "@types/chai": "^4.3.4",
+    "@types/chai": "^4.3.5",
     "@types/crypto-js": "^4.1.1",
-    "@types/jsrsasign": "^10.5.4",
+    "@types/he": "^1.2.0",
+    "@types/jsrsasign": "^10.5.8",
     "@types/mocha": "^10.0.1",
-    "@types/node": "^18.11.14",
+    "@types/node": "^20.4.4",
     "chai": "^4.3.7",
+    "jest":"^29.6.1",
     "mocha": "^10.2.0",
     "ts-node": "^10.9.1"
   }

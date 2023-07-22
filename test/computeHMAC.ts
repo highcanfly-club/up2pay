@@ -25,7 +25,14 @@ describe('computeHMAC', () => {
             payboxRepondreA: "https://www.exemple.com/payment/process",
             amount: 5000,
             email: "tester@example.com",
+            firstname: 'Ronan',
+            lastname: 'L.',
+            address1: '18 route de Notre-Dame-de-la-Gorge',
+            zipcode: '74170',
+            city: 'Les Contamines-Montjoie',
+            countrycode: "250", // Code ISO-3166-1
             reference: "123456",
+            totalquantity: "12"
           });
           expect(up2pay.request.PBX_HMAC).to.be.a("string")
           

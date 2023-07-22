@@ -2,9 +2,9 @@ import hmacSHA512 from "crypto-js/hmac-sha512.js";
 import Hex from "crypto-js/enc-hex.js";
 
 import errors from "./errors.js";
-import type { Document, Params, Request, Result, FormElement } from "./types";
+import type { Document, Params, Request, Result, FormElement, Billing } from "./types";
 import { isSignatureIsValid } from "./crypto.js";
-
+import he from "he";
 export * from "./types.js";
 
 export class Up2Pay implements Document {
@@ -37,6 +37,17 @@ export class Up2Pay implements Document {
       PBX_ANNULE: params.payboxAnnule,
       PBX_ATTENTE: params.payboxAttente,
       PBX_REPONDRE_A: params.payboxRepondreA,
+      PBX_BILLING: Up2Pay.getBilling(
+        {
+          firstname: params.firstname,
+          lastname: params.lastname,
+          address1: params.address1,
+          address2: params.address2,
+          zipcode: params.zipcode,
+          city: params.city,
+          countrycode: params.countrycode
+        }),
+      PBX_SHOPPINGCART: Up2Pay.getShoppingCart(params.totalquantity),
       PBX_HMAC: "",
     };
 
@@ -238,6 +249,41 @@ export class Up2Pay implements Document {
         ? decodeURI(searchParams.get("signature") as string)
         : "",
     } as Result;
+  }
+
+  static getBilling(billing: Billing): string {
+    let szRet = '<?xml version="1.0" encoding="utf-8" ?>'
+    szRet += "<Billing>"
+    szRet += "<Address>"
+    szRet += `<FirstName>${billing.firstname}</FirstName>`
+    szRet += `<LastName>${billing.lastname}</LastName>`
+    szRet += `<Address1>${billing.address1}</Address1>`
+    if (typeof billing.address2 != "undefined" && billing.address2.length > 0) {
+      szRet += `<Address2>${billing.address2}</Address2>`
+    }
+    szRet += `<ZipCode>${billing.zipcode}</ZipCode>`
+    szRet += `<City>${billing.city}</City>`
+    szRet += `<CountryCode>${billing.countrycode}</CountryCode>`
+    szRet += "</Address>"
+    szRet += "</Billing>"
+    return he.encode(szRet, { useNamedReferences: true })
+  }
+
+  static getShoppingCart(quantity: string): string {
+    let iQuantity = parseInt(quantity)
+    if (Number.isNaN(iQuantity)) {
+      iQuantity = 1
+    }
+    if (iQuantity > 99){
+      iQuantity = 99
+    }
+    let szRet = '<?xml version="1.0" encoding="utf-8" ?>'
+    szRet += '<shoppingcart>'
+    szRet += '<total>'
+    szRet += `<totalQuantity>${iQuantity.toString()}</totalQuantity>`
+    szRet += '</total>'
+    szRet += '</shoppingcart>'
+    return he.encode(szRet, { useNamedReferences: true })
   }
 }
 

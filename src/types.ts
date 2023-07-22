@@ -13,6 +13,14 @@ export type Params = {
   devise?: Request["PBX_DEVISE"];
   reference: Request["PBX_CMD"];
   email: Request["PBX_PORTEUR"];
+  firstname: string,
+  lastname: string,
+  address1: string,
+  address2?: string,
+  zipcode: string,
+  city: string,
+  totalquantity: string, //string representation of a number from 1 to 12
+  countrycode: string, // Code ISO-3166-1
 };
 
 export type Document = {
@@ -24,6 +32,16 @@ export type FormElement = {
   name: string;
   value: string;
 };
+
+export type Billing = {
+  firstname: string;
+  lastname: string;
+  address1: string;
+  address2?: string;
+  zipcode: string;
+  city: string;
+  countrycode: string; // Code ISO-3166-1
+}
 
 export type Request = {
   /**
@@ -305,6 +323,17 @@ export type Request = {
    * Format : 'N'
    */
   PBX_3DS?: "N";
+
+  /**
+   * Champs de facturation 3DSv2 cf: https://www.ca-moncommerce.com/espace-client-mon-commerce/up2pay-e-transactions/ma-documentation/manuel-dintegration-focus-3ds-v2/principes-generaux/#integration-3dsv2-developpeur-webmaster
+   */
+  PBX_BILLING: string;
+
+  /**
+   * Champs de panier 3DSv2 cf: https://www.ca-moncommerce.com/espace-client-mon-commerce/up2pay-e-transactions/ma-documentation/manuel-dintegration-focus-3ds-v2/principes-generaux/#integration-3dsv2-developpeur-webmaster
+   */
+
+  PBX_SHOPPINGCART: string;
 };
 
 // See 11.1.7 documentation section for PBX_RETOUR

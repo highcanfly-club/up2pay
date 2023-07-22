@@ -1,6 +1,6 @@
 # up2pay System
 
-This library is a simple implementation of the up2pay System payment solution
+This library is a simple implementation of the up2pay System payment solution with 3DSecure v2
 
 ## How to use it
 
@@ -10,20 +10,27 @@ This library is a simple implementation of the up2pay System payment solution
 ### Get the payment form button
 
 ```js
-import { Up2Pay } from "@sctg/up2pay"
+import { Up2Pay } from "@highcanfly-club/up2pay"
 
 const payment = Up2Pay.create({
     payboxSite: '1999888',
     payboxRang: '32',
     payboxIdentifiant: '1686319',
-    payboxHmac: 'HMACHMACHMAC',
+    payboxHmac: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
     payboxEffectue: 'https://www.exemple.com/payment/success',
     payboxRefuse: 'https://www.exemple.com/payment/error',
     payboxAnnule: 'https://www.exemple.com/payment/cancelled',
     payboxAttente: 'https://www.exemple.com/payment/waiting',
     payboxRepondreA: 'https://www.exemple.com/payment/process',
     amount: 4990, // This is the price x100 to remove the comma
-    email: 'adrian@example.com',
+    email: 'ronan@example.com',
+    firstname: 'Ronan',
+    lastname: 'L.',
+    address1: '18 route de Notre-Dame-de-la-Gorge',
+    zipcode: '74170',
+    city: 'Les Contamines-Montjoie',
+    countrycode: "250", // Code ISO-3166-1
+    totalquantity: "12"
     reference: '123456',
 });
 
@@ -36,7 +43,7 @@ Where `form` contains an object similar to the one below.
 {
   "url": "https://preprod-tpeweb.up2pay.com/cgi/MYchoix_pagepaiement.cgi",
   "method": "POST",
-  "form": "<input type=\"hidden\" name=\"PBX_SITE\" value=\"1999888\" /><input type=\"hidden\" name=\"PBX_RANG\" value=\"32\" /><input type=\"hidden\" name=\"PBX_IDENTIFIANT\" value=\"1686319\" /><input type=\"hidden\" name=\"PBX_ARCHIVAGE\" value=\"559891246771\" /><input type=\"hidden\" name=\"PBX_TOTAL\" value=\"0000004990\" /><input type=\"hidden\" name=\"PBX_DEVISE\" value=\"978\" /><input type=\"hidden\" name=\"PBX_CMD\" value=\"123456\" /><input type=\"hidden\" name=\"PBX_PORTEUR\" value=\"adrian@example.com\" /><input type=\"hidden\" name=\"PBX_RETOUR\" value=\"amount:M;paymentId:R;transactionId:T;authorizationId:A;cardType:P;cardNumber:N;cardExpiration:D;error:E;payboxRef:S;signature:K;\" /><input type=\"hidden\" name=\"PBX_RUF1\" value=\"POST\" /><input type=\"hidden\" name=\"PBX_3DS\" value=\"N\" /><input type=\"hidden\" name=\"PBX_TIME\" value=\"07062019090726\" /><input type=\"hidden\" name=\"PBX_HASH\" value=\"SHA512\" /><input type=\"hidden\" name=\"PBX_EFFECTUE\" value=\"https://www.arlettie.fr/payment/success\" /><input type=\"hidden\" name=\"PBX_REFUSE\" value=\"https://www.arlettie.fr/payment/error\" /><input type=\"hidden\" name=\"PBX_ANNULE\" value=\"https://www.arlettie.fr/payment/cancelled\" /><input type=\"hidden\" name=\"PBX_ATTENTE\" value=\"https://www.arlettie.fr/payment/waiting\" /><input type=\"hidden\" name=\"PBX_REPONDRE_A\" value=\"https://api.arlettie.fr/payments/webhook\" /><input type=\"hidden\" name=\"PBX_HMAC\" value=\"713E1F0FF270D5AA16A61B76C3BACCC4A15B039E6472B0D13EE51D905D3DFA196FC572600646B5897ACDFBDE1404EE7BAFF727D1EDB723C0DA121720D485E7F7\" />",
+  "form": "<input type="hidden" name="PBX_SITE" value="1999888" /><input type="hidden" name="PBX_RANG" value="32" /><input type="hidden" name="PBX_IDENTIFIANT" value="1686319" /><input type="hidden" name="PBX_TOTAL" value="0000005000" /><input type="hidden" name="PBX_DEVISE" value="978" /><input type="hidden" name="PBX_SOURCE" value="RWD" /><input type="hidden" name="PBX_CMD" value="123456" /><input type="hidden" name="PBX_PORTEUR" value="tester@example.com" /><input type="hidden" name="PBX_RETOUR" value="amount:M;paymentId:R;transactionId:T;authorizationId:A;cardType:C;cardNumber:N;cardExpiration:D;error:E;payboxRef:S;date:W;time:Q;signature:K;" /><input type="hidden" name="PBX_RUF1" value="POST" /><input type="hidden" name="PBX_TIME" value="2023-07-22T17:58:06.270Z" /><input type="hidden" name="PBX_HASH" value="SHA512" /><input type="hidden" name="PBX_EFFECTUE" value="https://www.exemple.com/payment/success" /><input type="hidden" name="PBX_REFUSE" value="https://www.exemple.com/payment/error" /><input type="hidden" name="PBX_ANNULE" value="https://www.exemple.com/payment/cancelled" /><input type="hidden" name="PBX_ATTENTE" value="https://www.exemple.com/payment/waiting" /><input type="hidden" name="PBX_REPONDRE_A" value="https://www.exemple.com/payment/process" /><input type="hidden" name="PBX_BILLING" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;&lt;Billing&gt;&lt;Address&gt;&lt;FirstName&gt;Ronan&lt;/FirstName&gt;&lt;LastName&gt;L.&lt;/LastName&gt;&lt;Address1&gt;18 route de Notre-Dame-de-la-Gorge&lt;/Address1&gt;&lt;ZipCode&gt;74170&lt;/ZipCode&gt;&lt;City&gt;Les Contamines-Montjoie&lt;/City&gt;&lt;CountryCode&gt;250&lt;/CountryCode&gt;&lt;/Address&gt;&lt;/Billing&gt;" /><input type="hidden" name="PBX_SHOPPINGCART" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;&lt;shoppingcart&gt;&lt;total&gt;&lt;totalQuantity&gt;12&lt;/totalQuantity&gt;&lt;/total&gt;&lt;/shoppingcart&gt;" /><input type="hidden" name="PBX_HMAC" value="9AACAEC2F642D1A1A1210E1074A08A290AEB838E58A73C0B9CD41CE02F68EE58CC559989E3701EC168AADB5144915C504C0657D3475CD3808B2F521FFC028344" />",
   "elements": [
     {
       "name": "PBX_SITE",
@@ -47,7 +54,7 @@ Where `form` contains an object similar to the one below.
 
     {
       "name": "PBX_HMAC",
-      "value": "713E1F0FF270D5AA16A61B76C3BACCC4A15B039E6472B0D13EE51D905D3DFA196FC572600646B5897ACDFBDE1404EE7BAFF727D1EDB723C0DA121720D485E7F7"
+      "value": "9AACAEC2F642D1A1A1210E1074A08A290AEB838E58A73C0B9CD41CE02F68EE58CC559989E3701EC168AADB5144915C504C0657D3475CD3808B2F521FFC028344"
     }
   ]
 }
@@ -78,9 +85,3 @@ const status = Up2Pay.isValid(body, amount)
 // true
 ```
 
-## How to contribute
-
-- Clone the repository `git clone git@github.com:adriantombu/up2pay-system.git`
-- Install the packages with `yarn install`
-- Modify the files under in the `src/` folder
-- When everything's done, you can send a PR \o/

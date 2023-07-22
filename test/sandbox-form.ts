@@ -24,7 +24,14 @@ describe("sandbox-form", async () => {
     payboxRepondreA: "https://www.exemple.com/payment/process",
     amount: 5000,
     email: "tester@example.com",
+    firstname: 'Ronan',
+    lastname: 'L.',
+    address1: '18 route de Notre-Dame-de-la-Gorge',
+    zipcode: '74170',
+    city: 'Les Contamines-Montjoie',
+    countrycode: "250", // Code ISO-3166-1
     reference: "123456",
+    totalquantity: '12'
   });
 
   it("form url", async() => {
@@ -41,7 +48,8 @@ describe("sandbox-form", async () => {
 
   it("form form", async () => {
     let form = await up2pay.form();
-    expect(form.form).to.be.any;
+    console.log(form.form);
+    expect(form.form).to.be.string;
   });
 
   it("form elements", async () => {

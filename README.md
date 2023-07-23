@@ -59,7 +59,56 @@ Where `form` contains an object similar to the one below.
   ]
 }
 ```
+if needed you can provide a optional parameter with baseUrls, default is:
+```js
+baseUrls: {
+  prod: {
+    main: "https://tpeweb.e-transactions.fr",
+    fallback: "https://tpeweb.e-transactions.fr",
+  },
+  sandbox: {
+    main: "https://recette-tpeweb.e-transactions.fr",
+    fallback: "https://recette-tpeweb.e-transactions.fr",
+  },
+}
+```
+example:
+```js
+import { Up2Pay } from "@highcanfly-club/up2pay"
 
+const payment = Up2Pay.create({
+    payboxSite: '1999888',
+    payboxRang: '32',
+    payboxIdentifiant: '1686319',
+    payboxHmac: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+    payboxEffectue: 'https://www.exemple.com/payment/success',
+    payboxRefuse: 'https://www.exemple.com/payment/error',
+    payboxAnnule: 'https://www.exemple.com/payment/cancelled',
+    payboxAttente: 'https://www.exemple.com/payment/waiting',
+    payboxRepondreA: 'https://www.exemple.com/payment/process',
+    amount: 4990, // This is the price x100 to remove the comma
+    email: 'ronan@example.com',
+    firstname: 'Ronan',
+    lastname: 'L.',
+    address1: '18 route de Notre-Dame-de-la-Gorge',
+    zipcode: '74170',
+    city: 'Les Contamines-Montjoie',
+    countrycode: "250", // Code ISO-3166-1
+    totalquantity: "12"
+    reference: '123456',
+    baseUrls: {
+              prod: {
+                main: "https://tpeweb.e-transactions.fr",
+                fallback: "https://tpeweb.e-transactions.fr",
+              },
+              sandbox: {
+                main: "https://preprod-tpeweb.e-transactions.fr",
+                fallback: "https://preprod-tpeweb.e-transactions.fr",
+              },
+              });
+
+const form = await payment.form();
+```
 Note: It is better to use the `form` string instead of the `elements` array because the values are computed in a given order. This way you are certain that there will be no problem.
 
 ### Check the returned transaction
@@ -67,7 +116,7 @@ Note: It is better to use the `form` string instead of the `elements` array beca
 Always use the `payboxRepondreA` to check the transaction. This is a url directly called by Up2Pay from server to server that returns the result of the transaction.
 
 ```
-const { Up2Pay } = require('@adriantombu/up2pay-system')
+const { Up2Pay } = require('@highcanfly-club/up2pay')
 
 // This is an exemple of a POST body that you retrieve from the Up2Pay call
 const body = {

@@ -21,7 +21,20 @@ export type Params = {
   city: string,
   totalquantity: string, //string representation of a number from 1 to 12
   countrycode: string, // Code ISO-3166-1
+  baseUrls?:BaseUrls // overriding default base urls
 };
+
+export type BaseUrls =
+  {
+    prod: {
+      main: string;
+      fallback: string;
+    },
+    sandbox: {
+      main: string;
+      fallback: string;
+    },
+  }
 
 export type Document = {
   request: Request;
@@ -291,14 +304,14 @@ export type Request = {
    * Format : min. 2 caractères
    */
   PBX_TYPECARTE?:
-    | "CARTE"
-    | "PAYPAL"
-    | "CREDIT"
-    | "NETRESERVE"
-    | "PREPAYEE"
-    | "FINAREF"
-    | "LEETCHI"
-    | "PAYBUTTONS";
+  | "CARTE"
+  | "PAYPAL"
+  | "CREDIT"
+  | "NETRESERVE"
+  | "PREPAYEE"
+  | "FINAREF"
+  | "LEETCHI"
+  | "PAYBUTTONS";
 
   /**
    * Montant en centimes (donc sans virgule ni point) de la deuxième échéance d’un paiement fractionné.

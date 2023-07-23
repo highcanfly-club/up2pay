@@ -2,7 +2,7 @@ import hmacSHA512 from "crypto-js/hmac-sha512.js";
 import Hex from "crypto-js/enc-hex.js";
 
 import errors from "./errors.js";
-import type { Document, Params, Request, Result, FormElement, Billing } from "./types";
+import type { Document, Params, Request, Result, FormElement, Billing, BaseUrls } from "./types";
 import { isSignatureIsValid } from "./crypto.js";
 import he from "he";
 export * from "./types.js";
@@ -11,10 +11,16 @@ export class Up2Pay implements Document {
   request: Request;
   sandbox: boolean;
   secretKey: string; //hexstring
+  baseUrls: BaseUrls;
 
   constructor(params: Params) {
     this.sandbox = params.payboxSandbox;
     this.secretKey = params.payboxHmac || "";
+    if (typeof params.baseUrls !== "undefined") {
+      this.baseUrls = params.baseUrls;
+    } else {
+      this.baseUrls = baseUrlsDefault;
+    }
     this.request = {
       PBX_SITE: params.payboxSite,
       PBX_RANG: params.payboxRang,
@@ -274,7 +280,7 @@ export class Up2Pay implements Document {
     if (Number.isNaN(iQuantity)) {
       iQuantity = 1
     }
-    if (iQuantity > 99){
+    if (iQuantity > 99) {
       iQuantity = 99
     }
     let szRet = '<?xml version="1.0" encoding="utf-8" ?>'
@@ -303,14 +309,14 @@ const returnVars = <{ [index: string]: string }>{
 };
 
 const endpoint = "/cgi/FramepagepaiementRWD.cgi"; //old /cgi/MYchoix_pagepaiement.cgi
-const baseUrls = {
+const baseUrlsDefault = {
   prod: {
     main: "https://tpeweb.e-transactions.fr",
     fallback: "https://tpeweb.e-transactions.fr",
   },
   sandbox: {
-    main: "https://preprod-tpeweb.e-transactions.fr",
-    fallback: "https://preprod-tpeweb.e-transactions.fr",
+    main: "https://recette-tpeweb.e-transactions.fr",
+    fallback: "https://recette-tpeweb.e-transactions.fr",
   },
 };
 

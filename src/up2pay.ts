@@ -272,7 +272,8 @@ export class Up2Pay implements Document {
     szRet += `<CountryCode>${billing.countrycode}</CountryCode>`
     szRet += "</Address>"
     szRet += "</Billing>"
-    return he.encode(szRet, { useNamedReferences: true })
+    //return he.encode(szRet, { useNamedReferences: true })
+    return szRet
   }
 
   static getShoppingCart(quantity: string): string {
@@ -289,7 +290,8 @@ export class Up2Pay implements Document {
     szRet += `<totalQuantity>${iQuantity.toString()}</totalQuantity>`
     szRet += '</total>'
     szRet += '</shoppingcart>'
-    return he.encode(szRet, { useNamedReferences: true })
+    //return he.encode(szRet, { useNamedReferences: true })
+    return szRet
   }
 }
 

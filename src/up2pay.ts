@@ -169,7 +169,7 @@ export class Up2Pay implements Document {
    * @returns a Promise<string> containg the url of the tpeweb endpoint
    */
   private getUrl(): Promise<string> {
-    const urls = this.sandbox ? baseUrls.sandbox : baseUrls.prod;
+    const urls = this.sandbox ? this.baseUrls.sandbox : this.baseUrls.prod;
     const rUrl = `${urls.main}/load.html`;
     return new Promise<string>((resolve) => {
       fetch(rUrl).then((value) => {

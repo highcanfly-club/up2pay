@@ -293,6 +293,21 @@ export class Up2Pay implements Document {
     //return he.encode(szRet, { useNamedReferences: true })
     return szRet
   }
+
+  /**
+   * 
+   * @param parentFormElement the HTMLFormElement wich contains all the new inputs (must exist)
+   * @param payboxFormElements the elements to adds (probably form.elements)
+   */
+  static populateForm(parentFormElement: HTMLFormElement, payboxFormElements: FormElement[]): void {
+    payboxFormElements.map((e) => {
+      const _inputElement: HTMLInputElement = document.createElement('input') as HTMLInputElement;
+      _inputElement.type = "hidden";
+      _inputElement.name = e.name;
+      _inputElement.value = e.value;
+      parentFormElement.appendChild(_inputElement)
+    })
+  }
 }
 
 const returnVars = <{ [index: string]: string }>{

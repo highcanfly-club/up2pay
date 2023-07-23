@@ -112,7 +112,27 @@ const form = await payment.form();
 Note: It is better to use the `form` string instead of the `elements` array because the values are computed in a given order. This way you are certain that there will be no problem.
 
 If you want to populate dynamically with `form.elements` a form you can use `Up2Pay.populateForm(parentForm,form.elements)` 
+example:  
+```typescript
+import { Up2Pay } from '@highcanfly-club/up2pay';
 
+type FormElement = {
+    name: string;
+    value: string;
+};
+type Up2PayData = {
+    form: string; url: string; method: string; elements: FormElement[];
+}
+
+fetch(`/up2pay/getForm?${searchParams.toString()}`).then(value => {
+            value.json().then((data: Up2PayData) => {
+                console.log(data.form);
+                const formElement = (document.getElementById('up2payForm') as HTMLFormElement);
+                Up2Pay.populateForm(formElement,data.elements);
+                up2pay.value = data;
+            })
+        })
+```
 ### Check the returned transaction
 
 Always use the `payboxRepondreA` to check the transaction. This is a url directly called by Up2Pay from server to server that returns the result of the transaction.

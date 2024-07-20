@@ -1,6 +1,6 @@
 {
   "name": "@highcanfly-club/up2pay",
-  "version": "0.9.13",
+  "version": "0.9.14",
   "type": "module",
   "description": "A simple implementation of the Crédit Agricole Pay2Up System payment solution",
   "keywords": [
@@ -19,7 +19,8 @@
   "author": "Ronan Le Meillat <ronan.le_meillat@sctg.eu.org>",
   "license": "Private",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && gulp licenses",
+    "license": "gulp licenses",
     "test": "mocha -n loader=ts-node/esm --extension ts",
     "watch": "tsc -p . --watch",
     "create-ca": "openssl req -x509 -sha256 -days 3562 -nodes -newkey rsa:4096 -subj '/CN=demo.highcanly.club/C=FR/L=Flers-en-Escrebieux' -keyout localhost-rootCA.key -out localhost-rootCA.pem",
@@ -48,8 +49,11 @@
     "@types/jsrsasign": "^10.5.8",
     "@types/mocha": "^10.0.7",
     "@types/node": "^20.4.4",
+    "gulp": "^5.0.0",
+    "gulp-if": "^3.0.0",
+    "gulp-append-prepend": "^1.0.9",
     "chai": "^4.3.7",
-    "jest":"^29.6.1",
+    "jest": "^29.6.1",
     "mocha": "^10.6.0",
     "ts-node": "^10.9.1"
   }

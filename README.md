@@ -1,27 +1,39 @@
 # up2pay System
 
-This library is a simple implementation of the up2pay System payment solution with 3DSecure v2
+**Up2Pay** is a simple TypeScript library implementing the Up2Pay payment solution with 3DSecure v2.
 
-## How to use it
+## Features
 
-- Install the library
-- And then import it in your script
+- Easy integration with Up2Pay payment gateway
+- Supports 3DSecure v2
+- Sandbox and production environments
+- Detailed transaction validation
 
-### Get the payment form button
+## Installation
 
-```js
-import { Up2Pay } from "@highcanfly-club/up2pay"
+Install the library via npm:
+
+```bash
+npm install @highcanfly-club/up2pay
+```
+
+## Usage
+
+### Basic Setup
+
+```typescript
+import { Up2Pay } from "@highcanfly-club/up2pay";
 
 const payment = Up2Pay.create({
     payboxSite: '1999888',
     payboxRang: '32',
     payboxIdentifiant: '1686319',
     payboxHmac: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-    payboxEffectue: 'https://www.exemple.com/payment/success',
-    payboxRefuse: 'https://www.exemple.com/payment/error',
-    payboxAnnule: 'https://www.exemple.com/payment/cancelled',
-    payboxAttente: 'https://www.exemple.com/payment/waiting',
-    payboxRepondreA: 'https://www.exemple.com/payment/process',
+    payboxEffectue: 'https://www.example.com/payment/success',
+    payboxRefuse: 'https://www.example.com/payment/error',
+    payboxAnnule: 'https://www.example.com/payment/cancelled',
+    payboxAttente: 'https://www.example.com/payment/waiting',
+    payboxRepondreA: 'https://www.example.com/payment/process',
     amount: 4990, // This is the price x100 to remove the comma
     email: 'ronan@example.com',
     firstname: 'Ronan',
@@ -30,16 +42,16 @@ const payment = Up2Pay.create({
     zipcode: '74170',
     city: 'Les Contamines-Montjoie',
     countrycode: "250", // Code ISO-3166-1
-    totalquantity: "12"
+    totalquantity: "12",
     reference: '123456',
 });
 
 const form = await payment.form();
 ```
 
-Where `form` contains an object similar to the one below.
+You'll get a `form` contains an object similar to the one below.
 
-```
+```json
 {
   "url": "https://preprod-tpeweb.up2pay.com/cgi/MYchoix_pagepaiement.cgi",
   "method": "POST",
@@ -59,7 +71,9 @@ Where `form` contains an object similar to the one below.
   ]
 }
 ```
+
 if needed you can provide a optional parameter with baseUrls, default is:
+
 ```js
 baseUrls: {
   prod: {
@@ -72,7 +86,9 @@ baseUrls: {
   },
 }
 ```
+
 example:
+
 ```js
 import { Up2Pay } from "@highcanfly-club/up2pay"
 
@@ -109,10 +125,14 @@ const payment = Up2Pay.create({
 
 const form = await payment.form();
 ```
+
 Note: It is better to use the `form` string instead of the `elements` array because the values are computed in a given order. This way you are certain that there will be no problem.
 
-If you want to populate dynamically with `form.elements` a form you can use `Up2Pay.populateForm(parentForm,form.elements)` 
+### Dynamic Form Population
+
+If you want to populate dynamically with `form.elements` a form you can use `Up2Pay.populateForm(parentForm,form.elements)`  
 example:  
+
 ```typescript
 import { Up2Pay } from '@highcanfly-club/up2pay';
 
@@ -133,26 +153,31 @@ fetch(`/up2pay/getForm?${searchParams.toString()}`).then(value => {
             })
         })
 ```
-### Check the returned transaction
 
-Always use the `payboxRepondreA` to check the transaction. This is a url directly called by Up2Pay from server to server that returns the result of the transaction.
+### Transaction Validation
 
-```
-const { Up2Pay } = require('@highcanfly-club/up2pay')
+Always use the `payboxRepondreA` URL to validate the transaction server-side: This is a url directly called by Up2Pay from server to server that returns the result of the transaction.
 
-// This is an exemple of a POST body that you retrieve from the Up2Pay call
+```typescript
+const { Up2Pay } = require('@highcanfly-club/up2pay');
+
 const body = {
   authorizationId: '1234',
   error: '00000',
   amount: '4990',
   signature: 'SQDGFQSDGFQSDFR234GGR23523423',
   paymentId: '123456'
-}
+};
 
- // This should be saved in your database (along with the transaction id) before the user goes to the Up2Pay form
 const amount = 4990;
-
-const status = Up2Pay.isValid(body, amount)
-// true
+const status = Up2Pay.isValid(body, amount);
+console.log(status); // true if valid
 ```
 
+## Contributing
+
+Feel free to open issues or submit pull requests to improve this library.
+
+## License
+
+This project is licensed under the AGPL-3.0 License - see the [LICENSE](LICENSE) file for details.

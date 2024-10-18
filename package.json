@@ -39,7 +39,7 @@
     "jsrsasign": "^11.1.0"
   },
   "publishConfig": {
-    "@highcanfly-club:registry": "https://npm.pkg.github.com",
+    "access": "public",
     "tag": "latest"
   },
   "devDependencies": {

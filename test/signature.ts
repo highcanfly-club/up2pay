@@ -35,16 +35,16 @@ const message = fs.readFileSync(`${__dirname}/../data.txt`).toString("utf-8");
 const sig64 = fs.readFileSync(`${__dirname}/../sig64.txt`).toString("utf-8");
 
 function signatureIsValid(signature64: string): boolean {
-  const signature = Buffer.from(signature64, "base64"); //new Buffer(signature64 || "", "base64");
+  const _signature = Buffer.from(signature64, "base64"); //new Buffer(signature64 || "", "base64");
   if (
-    signature.length !== 128 &&
-    signature.length !== 256 &&
-    signature.length !== 512 &&
-    signature.length !== 1024
+    _signature.length !== 128 &&
+    _signature.length !== 256 &&
+    _signature.length !== 512 &&
+    _signature.length !== 1024
   ) {
     return false;
   }
-
+  const signature = new Uint8Array(_signature);
   const publicKey = crypto.createPublicKey(payboxPublicKey);
 
   return crypto

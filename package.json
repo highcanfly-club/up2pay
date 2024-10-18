@@ -1,6 +1,6 @@
 {
   "name": "@highcanfly-club/up2pay",
-  "version": "0.9.14",
+  "version": "0.9.15",
   "type": "module",
   "description": "A simple implementation of the Crédit Agricole Pay2Up System payment solution",
   "keywords": [
@@ -11,7 +11,7 @@
     "e-commerce"
   ],
   "engines": {
-    "node": ">=16.19.0"
+    "node": ">=20.0.0"
   },
   "main": "lib/up2pay.js",
   "types": "lib/up2pay.d.ts",
@@ -33,7 +33,7 @@
     "check-sign": "openssl base64 -d -in sig64.txt -out sig.bin && openssl dgst -sha1 -binary -verify localhostpubkey.pem -signature sig.bin data.txt"
   },
   "dependencies": {
-    "axios": "^1.7.2",
+    "axios": "^1.7.7",
     "crypto-js": "^4.2.0",
     "he": "^1.2.0",
     "jsrsasign": "^11.1.0"
@@ -43,18 +43,19 @@
     "tag": "latest"
   },
   "devDependencies": {
-    "@types/chai": "^4.3.5",
-    "@types/crypto-js": "^4.2.0",
-    "@types/he": "^1.2.0",
-    "@types/jsrsasign": "^10.5.8",
-    "@types/mocha": "^10.0.7",
+    "@types/chai": "^5.0.0",
+    "@types/crypto-js": "^4.2.2",
+    "@types/gulp": "^4.0.17",
+    "@types/he": "^1.2.3",
+    "@types/jsrsasign": "^10.5.14",
+    "@types/mocha": "^10.0.9",
     "@types/node": "^20.4.4",
+    "chai": "^5.1.1",
     "gulp": "^5.0.0",
-    "gulp-if": "^3.0.0",
     "gulp-append-prepend": "^1.0.9",
-    "chai": "^4.3.7",
-    "jest": "^29.6.1",
-    "mocha": "^10.6.0",
-    "ts-node": "^10.9.1"
+    "gulp-if": "^3.0.0",
+    "jest": "^29.7.0",
+    "mocha": "^10.7.3",
+    "ts-node": "^10.9.2"
   }
 }

@@ -16,6 +16,11 @@
  */
 import { RSAKey, KEYUTIL, KJUR } from "jsrsasign";
 
+/**
+ * Convert base64 to Uint6
+ * @param nChr the input character code
+ * @returns the corresponding 6-bit binary
+ */
 function b64ToUint6(nChr:number):number {
   return nChr > 64 && nChr < 91
     ? nChr - 65
@@ -30,6 +35,12 @@ function b64ToUint6(nChr:number):number {
     : 0;
 }
 
+/**
+ * Convert base64 to Uint8Array
+ * @param sBase64 the input base64 string
+ * @param nBlocksSize the output array block size (optional)
+ * @returns the resulting Uint8Array
+ */
 function base64DecToArr(sBase64:string, nBlocksSize?:number):Uint8Array {
   const sB64Enc = sBase64.replace(/[^A-Za-z0-9+/]/g, "");
   const nInLen = sB64Enc.length;
@@ -59,7 +70,11 @@ function base64DecToArr(sBase64:string, nBlocksSize?:number):Uint8Array {
   return taBytes;
 }
 
-/* Base64 string to array encoding */
+/**
+ * Convert Uint6 to base64 character
+ * @param nUint6 the input 6-bit binary
+ * @returns the corresponding base64 character code
+ */
 function uint6ToB64(nUint6:number) {
   return nUint6 < 26
     ? nUint6 + 65
@@ -74,6 +89,11 @@ function uint6ToB64(nUint6:number) {
     : 65;
 }
 
+/**
+ * Convert Uint8Array to base64 string
+ * @param aBytes the input Uint8Array
+ * @returns the resulting base64 string
+ */
 function base64EncArr(aBytes:Uint8Array) {
   let nMod3 = 2;
   let sB64Enc = "";
@@ -103,8 +123,11 @@ function base64EncArr(aBytes:Uint8Array) {
   );
 }
 
-/* UTF-8 array to JS string and vice versa */
-
+/**
+ * Convert UTF-8 Uint8Array to string
+ * @param aBytes the input Uint8Array
+ * @returns the resulting string
+ */
 function UTF8ArrToStr(aBytes:Uint8Array) {
   let sView = "";
   let nPart;
@@ -148,6 +171,11 @@ function UTF8ArrToStr(aBytes:Uint8Array) {
   return sView;
 }
 
+/**
+ * Convert string to UTF-8 Uint8Array
+ * @param sDOMStr the input string
+ * @returns the resulting Uint8Array
+ */
 function strToUTF8Arr(sDOMStr:string) {
   let aBytes;
   let nChr;
@@ -227,9 +255,9 @@ function strToUTF8Arr(sDOMStr:string) {
 }
 
 /**
- * 
- * @param base64str 
- * @returns a hex string converted from the input
+ * Convert base64 to hex
+ * @param base64str the input base64 string
+ * @returns the resulting hexadecimal string
  */
 export function base64ToHex(base64str: string): string {
     const _raw = base64DecToArr(base64str,) //Buffer.from(base64str, 'base64')
@@ -242,10 +270,10 @@ export function base64ToHex(base64str: string): string {
   }
 
   /**
-   * High performance ArrayBuffer to base64
-   * @param arrayBuffer input array buffer
-   * @returns a base64 encoded string
-   */
+ * Convert ArrayBuffer to base64
+ * @param arrayBuffer the input ArrayBuffer
+ * @returns the resulting base64 string
+ */
   export function base64ArrayBuffer(arrayBuffer: ArrayBuffer): string {
     let base64 = "";
     let encodings =
@@ -298,13 +326,13 @@ export function base64ToHex(base64str: string): string {
     return base64;
   }
 
-  /**
-   * 
-   * @param message a string containing the message
-   * @param signature64 a base64 encoded SHA1withRSA signature
-   * @param pubkey a PEM RSA pubkey (like -----BEGIN PUBLIC KEY-----/…/-----END PUBLIC KEY-----)
-   * @returns true if signature is valid
-   */
+ /**
+ * Validate a signature
+ * @param message the input message
+ * @param signature64 the input base64-encoded signature
+ * @param pubkey the input PEM RSA public key
+ * @returns true if the signature is valid, false otherwise
+ */
 export function isSignatureIsValid(message:string,signature64: string, pubkey: string): boolean {
     const rsa = KEYUTIL.getKey(pubkey) as RSAKey;
     const sig = new KJUR.crypto.Signature({ alg: "SHA1withRSA" });

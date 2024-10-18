@@ -273,24 +273,20 @@ export class Up2Pay implements Document {
     } as Result;
   }
 
-  static getBilling(billing: Billing): string {
-    let szRet = '<?xml version="1.0" encoding="utf-8" ?>'
-    szRet += "<Billing>"
-    szRet += "<Address>"
-    szRet += `<FirstName>${billing.firstname}</FirstName>`
-    szRet += `<LastName>${billing.lastname}</LastName>`
-    szRet += `<Address1>${billing.address1}</Address1>`
-    if (typeof billing.address2 != "undefined" && billing.address2.length > 0) {
-      szRet += `<Address2>${billing.address2}</Address2>`
-    }
-    szRet += `<ZipCode>${billing.zipcode}</ZipCode>`
-    szRet += `<City>${billing.city}</City>`
-    szRet += `<CountryCode>${billing.countrycode}</CountryCode>`
-    szRet += "</Address>"
-    szRet += "</Billing>"
-    //return he.encode(szRet, { useNamedReferences: true })
-    return szRet
-  }
+  public static getBilling(billing: Billing): string {
+  return `<?xml version="1.0" encoding="utf-8" ?>
+          <Billing>
+            <Address>
+              <FirstName>${billing.firstname}</FirstName>
+              <LastName>${billing.lastname}</LastName>
+              <Address1>${billing.address1}</Address1>
+              ${billing.address2 ? `<Address2>${billing.address2}</Address2>` : ''}
+              <ZipCode>${billing.zipcode}</ZipCode>
+              <City>${billing.city}</City>
+              <CountryCode>${billing.countrycode}</CountryCode>
+            </Address>
+          </Billing>`;
+        }
 
   static getShoppingCart(quantity: string): string {
     let iQuantity = parseInt(quantity)
@@ -300,14 +296,14 @@ export class Up2Pay implements Document {
     if (iQuantity > 99) {
       iQuantity = 99
     }
-    let szRet = '<?xml version="1.0" encoding="utf-8" ?>'
-    szRet += '<shoppingcart>'
-    szRet += '<total>'
-    szRet += `<totalQuantity>${iQuantity.toString()}</totalQuantity>`
-    szRet += '</total>'
-    szRet += '</shoppingcart>'
+    let szRet = `<?xml version="1.0" encoding="utf-8" ?>
+               <shoppingcart>
+                 <total>
+                   <totalQuantity>${iQuantity.toString()}</totalQuantity>
+                 </total>
+               </shoppingcart>`;
     //return he.encode(szRet, { useNamedReferences: true })
-    return szRet
+    return szRet;
   }
 
   /**
